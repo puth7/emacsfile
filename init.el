@@ -1,4 +1,10 @@
 ;;--------------------------------------------
+(set-register ?i (cons 'file "~/.emacs.d/init.el"))
+(set-register ?1 (cons 'file "E:/s3/coding_theory/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" ))
+(set-register ?2 (cons 'file "E:/s3/coding_theory/binary_puzzle_as_erasure_decoding/poster-esit-2015.tex" ))
+;;--------------------------------------------
+
+;;--------------------------------------------
 (define-key global-map (kbd "<apps>") 'execute-extended-command);; untuk winsdows (komoputer kantor
 ;;----------------------------------------
 
@@ -69,9 +75,7 @@
 ;;(setq latex-run-command "pdflatex")
 ;;--------------------------------------------
 
-;;--------------------------------------------
-(set-register ?i (cons 'file "~/.emacs.d/init.el"))
-;;--------------------------------------------
+
 
 ;;--------------------------------------------
 ;;enter auto indent
@@ -177,4 +181,37 @@
 ;;--------------------------------------------
 (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fls" t)
 (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fdb_latexmk" t)
+;;--------------------------------------------
 
+;;--------------------------------------------
+;;helm mode
+(require 'helm)
+(require 'helm-config)
+
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(when (executable-find "curl")
+  (setq helm-google-suggest-use-curl-p t))
+
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t)
+
+(helm-mode 1)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-autoresize-mode t)
+;;--------------------------------------------
