@@ -202,7 +202,7 @@
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files))
+(global-set-key (kbd "C-x C-f") 'helm-projectile-find-files))
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (helm-autoresize-mode t)
