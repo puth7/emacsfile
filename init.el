@@ -24,14 +24,17 @@
 ;;--------------------------------------------
 
 ;;--------------------------------------------
-;autocoomplete
+					;;autocoomplete
+
 (require 'auto-complete-sage)
 (global-auto-complete-mode t)
 (require 'auto-complete-auctex)
-;; (require 'ac-helm)  ;; Not necessary if using ELPA package
-;; (global-set-key (kbd "C-:") 'ac-complete-with-helm)
-;; (define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
-;----------------------------------------
+ (require 'ac-helm)  ;; Not necessary if using ELPA package
+ (global-set-key (kbd "C-:") 'ac-complete-with-helm)
+(define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
+(require 'auto-complete-config)
+(ac-config-default)
+(ac-flyspell-workaround)                        ;----------------------------------------
 
 ;;--------------------------------------------
 ;;; parentheses marking
@@ -52,7 +55,7 @@
  '(font-latex-subscript-face ((t nil)))
  '(font-latex-superscript-face ((t nil)))
  )
-; Exclude bold/italic from keywords
+					; Exclude bold/italic from keywords
 (setq font-latex-deactivated-keyword-classes
     '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
 ;;  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore)) ;; disable auto subscript for latex file
@@ -115,11 +118,16 @@
 
 ;;----------------------------------------
 ;;add latexmk 
-(add-hook 'LaTeX-mode-hook (lambda ()
-                             (push 
-                              '("mklatex" "latexmk -pdf %s" TeX-run-TeX nil t
-                                :help "Run Latexmk on file")
-                              TeX-command-list)))
+;; (add-hook 'LaTeX-mode-hook (lambda ()
+;;                              (push 
+;;                               '("mklatex" "latexmk -pdf %s" TeX-run-TeX nil t
+;;                                 :help "Run Latexmk on file")
+;;                               TeX-command-list)))
+(require 'auctex-latexmk)
+(auctex-latexmk-setup)
+
+(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fls" t)
+(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fdb_latexmk" t)
 ;;----------------------------------------
 
 ;;----------------------------------------
@@ -128,8 +136,13 @@
 (setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
-(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode -1))))
+;;(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+;;  (add-hook hook (lambda () (flyspell-mode -1))))
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (flyspell-prog-mode)
+                                        ; ...
+            ))
 ;;----------------------------------------
 
 ;;----------------------------------------
@@ -176,10 +189,7 @@
 ;;--------------------------------------------
 
 
-;;--------------------------------------------
-(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fls" t)
-(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fdb_latexmk" t)
-;;------------------------------------------------
+
 
 ;;--------------------------------------------
 ;;helm mode
@@ -202,16 +212,16 @@
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-projectile-find-files))
+(global-set-key (kbd "C-c C-f") 'helm-projectile)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (helm-autoresize-mode t)
 ;;--------------------------------------------
 
 ;;------------------------------------------------
-;; (require 'helm-projectile)
-;; (projectile-global-mode)
-;; (setq projectile-completion-system 'helm)
-;; (helm-projectile-on)
+ (require 'helm-projectile)
+ (projectile-global-mode)
+ (setq projectile-completion-system 'helm)
+ (helm-projectile-on)
 ;; (require 'helm-swoop) ;;ga perlu, helm occur cukup bagus
 ;;helm-descbinds
