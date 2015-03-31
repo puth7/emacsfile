@@ -1,7 +1,7 @@
 ;;--------------------------------------------
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
-(set-register ?1 (cons 'file "E:/s3/coding_theory/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" ))
-(set-register ?2 (cons 'file "E:/s3/coding_theory/binary_puzzle_as_erasure_decoding/poster-esit-2015.tex" ))
+(set-register ?1 (cons 'file "E:/puth/Documents/putranto/tue/s3/coding_theory/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" ))
+
 ;;--------------------------------------------
 
 ;;--------------------------------------------
@@ -210,7 +210,7 @@
       helm-ff-file-name-history-use-recentf t)
 
 (helm-mode 1)
-(global-set-key (kbd "C-c f") 'helm-projectile)
+;;(global-set-key (kbd "C-c f") 'helm-projectile)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
