@@ -22,7 +22,8 @@
 ;;--------------------------------------------
 (global-linum-mode 1)
 ;;--------------------------------------------
-
+;;disable toolbar
+(tool-bar-mode -1)
 ;;--------------------------------------------
 					;;autocoomplete
 
@@ -150,7 +151,7 @@
 ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; (setq reftex-plug-into-AUCTex t)
 ;;Once Reftex is loaded, you can invoke the table of contents buffer with C-c =
-(require 'tex-site)
+(load "auctex.el" nil t t)
 (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
 (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
 (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
@@ -185,7 +186,7 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 ;;--------------------------------------------
 
 
@@ -212,7 +213,7 @@
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-c C-f") 'helm-projectile)
+
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (helm-autoresize-mode t)
@@ -220,8 +221,9 @@
 
 ;;------------------------------------------------
  (require 'helm-projectile)
- (projectile-global-mode)
+ (projectile-global-mode )
  (setq projectile-completion-system 'helm)
- (helm-projectile-on)
+(helm-projectile-on)
+(global-set-key (kbd "C-c p") 'helm-projectile)
 ;; (require 'helm-swoop) ;;ga perlu, helm occur cukup bagus
 ;;helm-descbinds
