@@ -29,7 +29,7 @@
 
 (require 'auto-complete-sage)
 (global-auto-complete-mode t)
-(require 'auto-complete-auctex)
+
  (require 'ac-helm)  ;; Not necessary if using ELPA package
  (global-set-key (kbd "C-:") 'ac-complete-with-helm)
 (define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
@@ -44,39 +44,6 @@
 (set-face-attribute 'show-paren-mismatch-face nil 
                     :weight 'bold :underline t :overline nil :slant 'normal)
 ;------------------------------------------
-
-;;--------------------------------------------
-;;;latex normal font-only work with auctex
-;; Only change sectioning colour
-(setq font-latex-fontify-sectioning 'color)
-;; super-/sub-script on baseline
-(setq font-latex-script-display (quote (nil)))
-;; Do not change super-/sub-script font
-(custom-set-faces
- '(font-latex-subscript-face ((t nil)))
- '(font-latex-superscript-face ((t nil)))
- )
-					; Exclude bold/italic from keywords
-(setq font-latex-deactivated-keyword-classes
-    '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
-;;  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore)) ;; disable auto subscript for latex file
-;;--------------------------------------------
-
-;;--------------------------------------------
-;;enable reference with bibtex
-;;(require 'bibtex)
-;;--------------------------------------------
-
-;-------------------------------------------
-;;(cd "/home/puth/Documents/Putranto/TUe/Binary sudoku") not working
-;;--------------------------------------------
-
-;;------------------------------------------------
-(setq-default TeX-PDF-mode t)
-(setq-default TeX-engine 'luatex)
-;;(setq latex-run-command "pdflatex")
-;;--------------------------------------------
-
 
 
 ;;--------------------------------------------
@@ -112,25 +79,6 @@
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 ;;-------------------------
 
-;;---------------------------
-;;enable math mode
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-;;-------------------------------
-
-;;----------------------------------------
-;;add latexmk 
-;; (add-hook 'LaTeX-mode-hook (lambda ()
-;;                              (push 
-;;                               '("mklatex" "latexmk -pdf %s" TeX-run-TeX nil t
-;;                                 :help "Run Latexmk on file")
-;;                               TeX-command-list)))
-(require 'auctex-latexmk)
-(auctex-latexmk-setup)
-
-(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fls" t)
-(add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fdb_latexmk" t)
-;;----------------------------------------
-
 ;;----------------------------------------
 ;;on the fly 
 (setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
@@ -146,41 +94,10 @@
             ))
 ;;----------------------------------------
 
-;;----------------------------------------
-;;(add-hook 'latex-mode-hook 'turn -on-reftex) 
-;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;; (setq reftex-plug-into-AUCTex t)
-;;Once Reftex is loaded, you can invoke the table of contents buffer with C-c =
-(load "auctex.el" nil t t)
-(autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-(autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
-(autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-(autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
-(add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
- (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(setq LaTeX-eqnarray-label "eq"
-      LaTeX-equation-label "eq"
-      LaTeX-figure-label "fig"
-      LaTeX-table-label "tab"
-      LaTeX-myChapter-label "chap"
-      TeX-auto-save t
-      TeX-newline-function 'reindent-then-newline-and-indent
-      TeX-parse-self t
-      TeX-style-path
-      '("style/" "auto/"
-        "/usr/share/emacs21/site-lisp/auctex/style/"
-        "/var/lib/auctex/emacs21/"
-        "/usr/local/share/emacs/site-lisp/auctex/style/")
-      LaTeX-section-hook
-      '(LaTeX-section-heading
-        LaTeX-section-title
-	LaTeX-section-toc
-	LaTeX-section-section
-	LaTeX-section-label))
-;;----------------------------------------
-
-
+;;---------------------------
+;;enable math mode
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;;-------------------------------
 ;;------------------------------------------------
 ;;recent file open
 (require 'recentf)
@@ -227,3 +144,89 @@
 (global-set-key (kbd "C-c p") 'helm-projectile)
 ;; (require 'helm-swoop) ;;ga perlu, helm occur cukup bagus
 ;;helm-descbinds
+
+
+
+;; ;;----------------------------------------
+;; ;;add latexmk 
+;; ;; (add-hook 'LaTeX-mode-hook (lambda ()
+;; ;;                              (push 
+;; ;;                               '("mklatex" "latexmk -pdf %s" TeX-run-TeX nil t
+;; ;;                                 :help "Run Latexmk on file")
+;; ;;                               TeX-command-list)))
+;; (require 'auctex-latexmk)
+;; (auctex-latexmk-setup)
+
+;; (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fls" t)
+;; (add-to-list 'LaTeX-clean-intermediate-suffixes "\\.fdb_latexmk" t)
+;; ;;----------------------------------------
+
+;; ;;----------------------------------------
+;; ;;(add-hook 'latex-mode-hook 'turn -on-reftex) 
+;; ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; ;; (setq reftex-plug-into-AUCTex t)
+;; ;;Once Reftex is loaded, you can invoke the table of contents buffer with C-c =
+;; (load "auctex.el" nil t t)
+;; (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
+;; (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
+;; (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
+;; (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
+;; (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
+;;  (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (setq LaTeX-eqnarray-label "eq"
+;;       LaTeX-equation-label "eq"
+;;       LaTeX-figure-label "fig"
+;;       LaTeX-table-label "tab"
+;;       LaTeX-myChapter-label "chap"
+;;       TeX-auto-save t
+;;       TeX-newline-function 'reindent-then-newline-and-indent
+;;       TeX-parse-self t
+;;       TeX-style-path
+;;       '("style/" "auto/"
+;;         "/usr/share/emacs21/site-lisp/auctex/style/"
+;;         "/var/lib/auctex/emacs21/"
+;;         "/usr/local/share/emacs/site-lisp/auctex/style/")
+;;       LaTeX-section-hook
+;;       '(LaTeX-section-heading
+;;         LaTeX-section-title
+;; 	LaTeX-section-toc
+;; 	LaTeX-section-section
+;; 	LaTeX-section-label))
+;; ;; ;;----------------------------------------
+
+
+
+;; ;;--------------------------------------------
+;; ;;;latex normal font-only work with auctex
+;; ;; Only change sectioning colour
+;; (require 'auto-complete-auctex)
+;; (setq font-latex-fontify-sectioning 'color)
+;; ;; super-/sub-script on baseline
+;; (setq font-latex-script-display (quote (nil)))
+;; ;; Do not change super-/sub-script font
+;; (custom-set-faces
+;;  '(font-latex-subscript-face ((t nil)))
+;;  '(font-latex-superscript-face ((t nil)))
+;;  )
+;; 					; Exclude bold/italic from keywords
+;; (setq font-latex-deactivated-keyword-classes
+;;     '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
+;; ;;  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore)) ;; disable auto subscript for latex file
+;; ;;--------------------------------------------
+
+;; ;;--------------------------------------------
+;; ;;enable reference with bibtex
+;; ;;(require 'bibtex)
+;; ;;--------------------------------------------
+
+;; ;-------------------------------------------
+;; ;;(cd "/home/puth/Documents/Putranto/TUe/Binary sudoku") not working
+;; ;;--------------------------------------------
+
+;; ;;------------------------------------------------
+;; (setq-default TeX-PDF-mode t)
+;; (setq-default TeX-engine 'luatex)
+;; ;;(setq latex-run-command "pdflatex")
+;; ;;--------------------------------------------
+
