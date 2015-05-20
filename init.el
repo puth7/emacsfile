@@ -17,6 +17,10 @@
 ;;auto-complete
 ;;show-paren-mode
 ;;helm
+;;flycheck
+;; helm-sage
+;;sage-shell-mode ;; install to have support on sage file
+;;flyspell
 ;;--------------------------------------------
 
 ;;--------------------------------------------
@@ -25,40 +29,28 @@
 ;;disable toolbar
 (tool-bar-mode -1)
 ;;--------------------------------------------
-					;;autocoomplete
-
-(require 'auto-complete-sage)
-(global-auto-complete-mode t)
-
- (require 'ac-helm)  ;; Not necessary if using ELPA package
- (global-set-key (kbd "C-:") 'ac-complete-with-helm)
-(define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-flyspell-workaround)                        ;----------------------------------------
 
 ;;--------------------------------------------
-;;; parentheses marking
-(show-paren-mode t)               ;; turn paren-mode on
-(set-face-foreground 'show-paren-mismatch-face "red") 
-(set-face-attribute 'show-paren-mismatch-face nil 
-                    :weight 'bold :underline t :overline nil :slant 'normal)
-;------------------------------------------
-
+;;recent file open
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;;--------------------------------------------
 
 ;;--------------------------------------------
-;enter auto indent
-  (setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
-  (require 'auto-indent-mode)
- (auto-indent-global-mode)
+;;enter auto indent
+(require 'auto-indent-mode)
+(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
+(auto-indent-global-mode)
 ;;(electric-indent-mode 1)
-;(define-key global-map (kbd "RET") 'newline-and-indent)
-;;(add-hook 'lisp-mode-hook '(lambda ()  (local-set-key (kbd "RET") 'newline-and-indent))) ;;not working
+;;(define-key global-map (kbd "RET") 'newline-and-indent)
+;;(add-hook 'lisp-mode-hook '(lambda () (local-set-key (kbd "RET") 'newline-and-indent))) ;;not working
 ;;; Indentation for python
 ;; Enter key executes newline-and-indent
 ;; (defun set-sage-newline-and-indent ()
-;;   "change auto indent with normal one"
-;;   (setq auto-indent-newline-function 'newline-and-indent))
+;; "change auto indent with normal one"
+;; (setq auto-indent-newline-function 'newline-and-indent))
 ;; (add-hook 'sage-shell:sage-mode-hook 'set-sage-newline-and-indent)
 (add-to-list 'auto-indent-disabled-modes-list 'sage-shell:sage-mode)
 (defun set-newline-and-indent ()
@@ -68,46 +60,18 @@
 ;;------------------------------------------
 
 ;;--------------------------------------------
-;;inverse/forward search mode latex
-(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-(setq TeX-source-correlate-start-server t)
-;;---------------------------
+;;; parentheses marking
+(show-paren-mode t) ;; turn paren-mode on
+(set-face-foreground 'show-paren-mismatch-face "red")
+(set-face-attribute 'show-paren-mismatch-face nil
+                    :weight 'bold :underline t :overline nil :slant 'normal)
+;;------------------------------------------
 
-;;---------------------
+;;------------------------------------------
 ;; word wrap -- nice view
 (global-visual-line-mode 1)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
-;;-------------------------
-
-;;----------------------------------------
-;;on the fly 
-(setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
-(setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
-;;(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
-;;  (add-hook hook (lambda () (flyspell-mode -1))))
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (flyspell-prog-mode)
-                                        ; ...
-            ))
-;;----------------------------------------
-
-;;---------------------------
-;;enable math mode
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-;;-------------------------------
-;;------------------------------------------------
-;;recent file open
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-;;--------------------------------------------
-
-
-
+;;-------------------------------------------
 
 ;;--------------------------------------------
 ;;helm mode
@@ -129,24 +93,84 @@
       helm-scroll-amount 8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
-
+;;(global-set-key (kbd "C-c f") 'helm-projectile)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "M-x") 'helm-M-x)
 (helm-autoresize-mode t)
-;;--------------------------------------------
+;;-----------------------------------------------
 
 ;;------------------------------------------------
- (require 'helm-projectile)
- (projectile-global-mode )
- (setq projectile-completion-system 'helm)
+(require 'helm-projectile)
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
 (helm-projectile-on)
-(global-set-key (kbd "C-c p") 'helm-projectile)
-;; (require 'helm-swoop) ;;ga perlu, helm occur cukup bagus
-;;helm-descbinds
+;;------------------------------------------------
+
+;;----------------------------------------
+;;on the fly
+(require 'flyspell)
+(setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
+(setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode -1))))
+;;----------------------------------------
+
+;;--------------------------------------------
+					;;autocoomplete
+
+;; (require 'auto-complete-sage)
+;; (global-auto-complete-mode t)
+
+;;  (require 'ac-helm)  ;; Not necessary if using ELPA package
+;;  (global-set-key (kbd "C-:") 'ac-complete-with-helm)
+;; (define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (ac-flyspell-workaround)                        ;----------------------------------------
+
+;;--------------------------------------------
+;;inverse/forward search mode latex
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+(setq TeX-source-correlate-start-server t)
+;;---------------------------
+
+;;---------------------------
+;;enable math mode
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;;-------------------------------
+
+;; ;;--------------------------------------------
+;; ;;;latex normal font-only work with auctex
+;; ;; Only change sectioning colour
+;; (require 'auto-complete-auctex)
+;; (setq font-latex-fontify-sectioning 'color)
+;; ;; super-/sub-script on baseline
+;; (setq font-latex-script-display (quote (nil)))
+;; ;; Do not change super-/sub-script font
+;; (custom-set-faces
+;;  '(font-latex-subscript-face ((t nil)))
+;;  '(font-latex-superscript-face ((t nil)))
+;;  )
+;;                                      ; Exclude bold/italic from keywords
+;; (setq font-latex-deactivated-keyword-classes
+;;     '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
+;; ;;  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore)) ;; disable auto subscript for latex file
+;; ;;--------------------------------------------
+
+;; ;;------------------------------------------------
+;; (setq-default TeX-PDF-mode t)
+;; (setq-default TeX-engine 'luatex)
+;; ;;(setq latex-run-command "pdflatex")
+;; ;;--------------------------------------------
 
 
 
+
+
+;;;; to be considered  --> ??
 ;; ;;----------------------------------------
 ;; ;;add latexmk 
 ;; ;; (add-hook 'LaTeX-mode-hook (lambda ()
@@ -197,23 +221,6 @@
 
 
 
-;; ;;--------------------------------------------
-;; ;;;latex normal font-only work with auctex
-;; ;; Only change sectioning colour
-;; (require 'auto-complete-auctex)
-;; (setq font-latex-fontify-sectioning 'color)
-;; ;; super-/sub-script on baseline
-;; (setq font-latex-script-display (quote (nil)))
-;; ;; Do not change super-/sub-script font
-;; (custom-set-faces
-;;  '(font-latex-subscript-face ((t nil)))
-;;  '(font-latex-superscript-face ((t nil)))
-;;  )
-;; 					; Exclude bold/italic from keywords
-;; (setq font-latex-deactivated-keyword-classes
-;;     '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
-;; ;;  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore)) ;; disable auto subscript for latex file
-;; ;;--------------------------------------------
 
 ;; ;;--------------------------------------------
 ;; ;;enable reference with bibtex
@@ -224,9 +231,4 @@
 ;; ;;(cd "/home/puth/Documents/Putranto/TUe/Binary sudoku") not working
 ;; ;;--------------------------------------------
 
-;; ;;------------------------------------------------
-;; (setq-default TeX-PDF-mode t)
-;; (setq-default TeX-engine 'luatex)
-;; ;;(setq latex-run-command "pdflatex")
-;; ;;--------------------------------------------
 
