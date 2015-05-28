@@ -1,7 +1,7 @@
 ;;--------------------------------------------
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
-(set-register ?1 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" ))
-(set-register ?2 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/poster-esit-2015.tex" ))
+;; (set-register ?1 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" )) 
+;; (set-register ?2 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/poster-esit-2015.tex" ))
 ;;--------------------------------------------
 
 ;;--------------------------------------------
@@ -29,13 +29,13 @@
 ;;disable toolbar
 (tool-bar-mode -1)
 ;;--------------------------------------------
-
+;;
 ;;--------------------------------------------
-;;recent file open
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; ;;recent file open -> use helm recentf
+;; (require 'recentf)
+;; (recentf-mode 1)
+;; (setq recentf-max-menu-items 25)
+;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 ;;--------------------------------------------
 
 ;;--------------------------------------------
@@ -94,9 +94,10 @@
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
 ;;(global-set-key (kbd "C-c f") 'helm-projectile)
-(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "M-s o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
 (helm-autoresize-mode t)
 ;;-----------------------------------------------
 
@@ -164,8 +165,8 @@
 ;;--------------------------------------------
 
 ;; ;;------------------------------------------------
- (setq-default TeX-PDF-mode t)
- (setq-default TeX-engine 'luatex)
+;; (setq-default TeX-PDF-mode t)
+;; (setq-default TeX-engine 'luatex)
 ;; ;;(setq latex-run-command "pdflatex")
 ;; ;;--------------------------------------------
 
