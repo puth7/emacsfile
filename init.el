@@ -29,29 +29,12 @@
 ;;disable toolbar
 (tool-bar-mode -1)
 ;;--------------------------------------------
-;;
-;;--------------------------------------------
-;; ;;recent file open -> use helm recentf
-;; (require 'recentf)
-;; (recentf-mode 1)
-;; (setq recentf-max-menu-items 25)
-;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-;;--------------------------------------------
 
 ;;--------------------------------------------
 ;;enter auto indent
 (require 'auto-indent-mode)
 (setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
 (auto-indent-global-mode)
-;;(electric-indent-mode 1)
-;;(define-key global-map (kbd "RET") 'newline-and-indent)
-;;(add-hook 'lisp-mode-hook '(lambda () (local-set-key (kbd "RET") 'newline-and-indent))) ;;not working
-;;; Indentation for python
-;; Enter key executes newline-and-indent
-;; (defun set-sage-newline-and-indent ()
-;; "change auto indent with normal one"
-;; (setq auto-indent-newline-function 'newline-and-indent))
-;; (add-hook 'sage-shell:sage-mode-hook 'set-sage-newline-and-indent)
 (add-to-list 'auto-indent-disabled-modes-list 'sage-shell:sage-mode)
 (defun set-newline-and-indent ()
   "Map the return key with `newline-and-indent'"
@@ -118,6 +101,13 @@
 (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
   (add-hook hook (lambda () (flyspell-mode -1))))
 ;;----------------------------------------
+
+;;---------------------------
+;;magit shortcut/set key
+(global-set-key (kbd "C-x v c") 'magit-commit)
+(global-set-key (kbd "C-x v f") 'magit-pull)
+(global-set-key (kbd "C-x v p") 'magit-push)
+
 
 ;;--------------------------------------------
 					;;autocoomplete
@@ -229,10 +219,6 @@
 ;; ;;--------------------------------------------
 ;; ;;enable reference with bibtex
 ;; ;;(require 'bibtex)
-;; ;;--------------------------------------------
-
-;; ;-------------------------------------------
-;; ;;(cd "/home/puth/Documents/Putranto/TUe/Binary sudoku") not working
 ;; ;;--------------------------------------------
 
 
