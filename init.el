@@ -1,16 +1,17 @@
 ;;--------------------------------------------
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
+;;C-x r j i
 ;; (set-register ?1 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/binary_puzzle_as_erasure_coding.tex" )) 
 ;; (set-register ?2 (cons 'file "/home/puth/Documents/putranto/tue/research/binary_puzzle_as_erasure_decoding/poster-esit-2015.tex" ))
+(global-set-key "\C-x\ \T" 'eshell)
 ;;--------------------------------------------
 
 ;;--------------------------------------------
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) )
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) )
 ;;probably needed:
-;; magit
 ;;auctex
 ;;auto-complete-sage
 ;;auto-complete-auctex
@@ -18,13 +19,16 @@
 ;;show-paren-mode
 ;;helm
 ;;flycheck
-;; helm-sage
 ;;sage-shell-mode ;; install to have support on sage file
 ;;flyspell
+
 ;;--------------------------------------------
 
 ;;--------------------------------------------
-(global-linum-mode 1)
+;;(global-linum-mode 1)
+(add-hook 'prog-mode-hook 'linum-mode 1)
+(add-hook 'text-mode-hook 'linum-mode 1)
+
 ;;--------------------------------------------
 ;;disable toolbar
 (tool-bar-mode -1)
@@ -32,22 +36,22 @@
 
 ;;--------------------------------------------
 ;;enter auto indent
-(require 'auto-indent-mode)
-(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
-(auto-indent-global-mode)
-(add-to-list 'auto-indent-disabled-modes-list 'sage-shell:sage-mode)
-(defun set-newline-and-indent ()
-  "Map the return key with `newline-and-indent'"
-  (local-set-key (kbd "RET") 'newline-and-indent))
-(add-hook 'sage-shell:sage-mode-hook 'set-newline-and-indent)
+;; (require 'auto-indent-mode)
+;; ;;(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
+;; ;;(auto-indent-global-mode)
+;; (add-to-list 'auto-indent-disabled-modes-list 'sage-shell:sage-mode)
+;; (defun set-newline-and-indent ()
+;;   "Map the return key with `newline-and-indent'"
+;;   (local-set-key (kbd "RET") 'newline-and-indent))
+;; (add-hook 'sage-shell:sage-mode-hook 'set-newline-and-indent)
 ;;------------------------------------------
 
 ;;--------------------------------------------
 ;;; parentheses marking
 (show-paren-mode t) ;; turn paren-mode on
-(set-face-foreground 'show-paren-mismatch-face "red")
-(set-face-attribute 'show-paren-mismatch-face nil
-                    :weight 'bold :underline t :overline nil :slant 'normal)
+;; (set-face-foreground 'show-paren-mismatch-face "red")
+;; (set-face-attribute 'show-paren-mismatch-face nil
+;;                     :weight 'bold :underline t :overline nil :slant 'normal)
 ;;------------------------------------------
 
 ;;------------------------------------------
@@ -76,37 +80,42 @@
       helm-scroll-amount 8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-ff-file-name-history-use-recentf t)
 (helm-mode 1)
-;;(global-set-key (kbd "C-c f") 'helm-projectile)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "M-s o") 'helm-occur)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "<menu>") 'helm-M-x)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 (helm-autoresize-mode t)
 ;;-----------------------------------------------
-
-;;------------------------------------------------
-(require 'helm-projectile)
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-;;------------------------------------------------
 
 ;;----------------------------------------
 ;;on the fly
 (require 'flyspell)
 (setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
+;(setq ispell-dictionary "indonesian") 
 (setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda () (flyspell-mode 1))))
 (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
   (add-hook hook (lambda () (flyspell-mode -1))))
 ;;----------------------------------------
+(require 'langtool)
+(setq langtool-language-tool-jar "/opt/program/nux/LanguageTool-5.1/languagetool-commandline.jar" )
+(setq langtool--user-arguments '("--languagemodel" "/opt/program/nux/ngrams-en-20150817"))
+;;---------------------
+;;(setq synonyms-file        "/home/puth/.emacs.d/mthesaur.txt")
+;;(setq synonyms-cache-file  "/home/puth/.emacs.d/mthesaur.txt.cache")
+;;(require 'synonyms)
+;;-----------------
+;;(require 'writegood-mode)
+;;-------------------
 
 ;;---------------------------
-;;magit shortcut/set key
-(global-set-key (kbd "C-x v c") 'magit-commit)
-(global-set-key (kbd "C-x v f") 'magit-pull)
-(global-set-key (kbd "C-x v p") 'magit-push)
+;; ;;magit shortcut/set key
+;; (global-set-key (kbd "C-x v c") 'magit-commit)
+;; (global-set-key (kbd "C-x v f") 'magit-pull)
+;; (global-set-key (kbd "C-x v p") 'magit-push)
 
 
 ;;--------------------------------------------
@@ -145,9 +154,12 @@
 (setq font-latex-script-display (quote (nil)))
 ;; Do not change super-/sub-script font
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(font-latex-subscript-face ((t nil)))
- '(font-latex-superscript-face ((t nil)))
- )
+ '(font-latex-superscript-face ((t nil))))
 ;; Exclude bold/italic from keywords
  (setq font-latex-deactivated-keyword-classes
      '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
@@ -180,45 +192,34 @@
 ;; ;;----------------------------------------
 
 ;; ;;----------------------------------------
-;; ;;(add-hook 'latex-mode-hook 'turn -on-reftex) 
-;; ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;; ;; (setq reftex-plug-into-AUCTex t)
+(add-hook 'latex-mode-hook 'turn-on-reftex) 
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTex t)
 ;; ;;Once Reftex is loaded, you can invoke the table of contents buffer with C-c =
-;; (load "auctex.el" nil t t)
-;; (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-;; (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
-;; (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-;; (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
-;; (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
-;;  (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;; (setq LaTeX-eqnarray-label "eq"
-;;       LaTeX-equation-label "eq"
-;;       LaTeX-figure-label "fig"
-;;       LaTeX-table-label "tab"
-;;       LaTeX-myChapter-label "chap"
-;;       TeX-auto-save t
-;;       TeX-newline-function 'reindent-then-newline-and-indent
-;;       TeX-parse-self t
-;;       TeX-style-path
-;;       '("style/" "auto/"
-;;         "/usr/share/emacs21/site-lisp/auctex/style/"
-;;         "/var/lib/auctex/emacs21/"
-;;         "/usr/local/share/emacs/site-lisp/auctex/style/")
-;;       LaTeX-section-hook
-;;       '(LaTeX-section-heading
-;;         LaTeX-section-title
-;; 	LaTeX-section-toc
-;; 	LaTeX-section-section
-;; 	LaTeX-section-label))
 ;; ;; ;;----------------------------------------
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(TeX-view-program-selection
+   (quote
+    (((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "PDF Tools")
+     (output-html "xdg-open"))))
+ '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (pdf-tools async auto-complete-sage helm-sage sage-shell-mode langtool auto-indent-mode auctex))))
 
+(setq sage-shell:use-prompt-toolkit nil)
 
-;; ;;--------------------------------------------
-;; ;;enable reference with bibtex
-;; ;;(require 'bibtex)
-;; ;;--------------------------------------------
+(pdf-tools-install)
 
-
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
